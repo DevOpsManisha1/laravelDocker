@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('prep') {
+            steps {
+                sh ''' sh npm.sh ''' 
+                
+            }
+        }
+         stage('npm_install') {
+            steps {
+                sh ''' npm install ''' 
+                
+            }
+        }
+        stage('linting_and_validation') {
+            steps {
+                sh ''' npm run lint ''' 
+                sh ''' npm run validate '''
+            }
+        }
+        stage('unit_testing'){
+            steps{
+                sh ''' npm run test '''
+            }
+        }
+        stage('build'){
+            steps{
+                sh ''' npm run build '''
+            }
+        }
+    }
+}
