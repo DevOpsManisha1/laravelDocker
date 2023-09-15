@@ -14,7 +14,7 @@ pipeline {
                         usernamePassword(credentialsId: 'MYSQL_APP_CREDENTIALS', usernameVariable: 'MYSQL_USER',passwordVariable: 'MYSQL_PASSWORD'),
                         string(credentialsId: 'MYSQL_ROOT_PASSWORD', variable: 'MYSQL_ROOT_PASSWORD'),
                         string(credentialsId: 'MYSQL_DATABASE', variable: 'MYSQL_DATABASE')
-                        ]) {
+                        ]) {    sh "ls -la && pwd && cat docker-compose.yaml"
                                 sh "sed -i \"s/MYSQL_DATABASE=.*/MYSQL_DATABASE=${MYSQL_DATABASE}/g\" ${dockerComposeFile}"
                                 sh "sed -i \"s/MYSQL_ROOT_PASSWORD=.*/MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}/g\" ${dockerComposeFile}"
                                 sh "sed -i \"s/MYSQL_USER=.*/MYSQL_USER=${MYSQL_USER}/g\" ${dockerComposeFile}"
