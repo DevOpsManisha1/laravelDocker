@@ -6,10 +6,10 @@ services:
         volumes:
             - '.:/app'
         environment:
-            - MYSQL_ROOT_PASSWORD=manisha
-            - MYSQL_DATABASE=app
-            - MYSQL_USER=appDBuser
-            - MYSQL_PASSWORD=appDBPass
+            - MYSQL_ROOT_PASSWORD=
+            - MYSQL_DATABASE=
+            - MYSQL_USER=
+            - MYSQL_PASSWORD=
         ports:
             - '3306:3306'
 

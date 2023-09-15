@@ -1,0 +1,54 @@
+pipeline {
+ agent 'any'
+ options {
+   skipStagesAfterUnstable()
+ }
+ stages {
+   stage('prepCode') {
+     when {
+        branch 'main'
+      }
+      steps {
+                script {
+                        def dockerComposeFile = 'docker-compose.yml'
+
+                        // Retrieve MySQL credentials from Jenkins Global Credentials
+                        withCredentials([
+                        usernamePassword(credentialsId: 'MYSQL_APP_CREDENTIALS', usernameVariable: 'MYSQL_USER',passwordVariable: 'MYSQL_PASSWORD'),
+                        string(credentialsId: 'MYSQL_ROOT_PASSWORD', variable: 'MYSQL_ROOT_PASSWORD'),
+                        string(credentialsId: 'MYSQL_DATABASE', variable: 'MYSQL_DATABASE')
+                        ]) {
+                                sh "sed -i \"s/MYSQL_DATABASE=.*/MYSQL_DATABASE=${MYSQL_DATABASE}/g\" ${dockerComposeFile}"
+                                sh "sed -i \"s/MYSQL_ROOT_PASSWORD=.*/MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}/g\" ${dockerComposeFile}"
+                                sh "sed -i \"s/MYSQL_USER=.*/MYSQL_USER=${MYSQL_USER}/g\" ${dockerComposeFile}"
+                                sh "sed -i \"s/MYSQL_PASSWORD=.*/MYSQL_PASSWORD=${MYSQL_PASSWORD}/g\" ${dockerComposeFile}"
+                        }
+                }
+        }  
+   }
+   stage('deploy'){
+        when {
+                branch 'main'
+        }
+        steps {
+                 withCredentials([string(credentialsId: 'phpserverUsername', variable: 'USER'), string(credentialsId: 'phpserverIP', variable: 'IP')]) {
+                 sh """
+                        rsync -auvz -e ssh --exclude .git/ $WORKSPACE $USER@$IP:/home/ && chmod -R 775 storage
+                        """
+                }
+        }
+   }
+   stage('runContainers'){
+        when {
+                branch 'main'
+        }
+        steps {
+                 withCredentials([string(credentialsId: 'phpserverUsername', variable: 'USER'), string(credentialsId: 'phpserverIP', variable: 'IP')]) {
+                 sh """
+                        ssh $USER@$IP 'cd /home/ && bash -s' < script.sh
+                        """
+                }
+        }
+   }
+ }
+}
