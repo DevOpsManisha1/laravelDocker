@@ -5,9 +5,6 @@ pipeline {
  }
    stages {
     stage('prepCode') {
-        when {
-          branch 'main'
-               }
         steps {
                 script {
                         def dockerComposeFile = 'docker-compose.yml'
@@ -27,9 +24,6 @@ pipeline {
         }
     }
    stage('deploy'){
-        when {
-                branch 'main'
-        }
         steps {
                 withCredentials([string(credentialsId: 'phpserverUsername', variable: 'USER'), string(credentialsId: 'phpserverIP', variable: 'IP')]) {
                 sh """
@@ -39,9 +33,6 @@ pipeline {
         }
    }
    stage('runContainers'){
-        when {
-                branch 'main'
-        }
         steps {
                 withCredentials([string(credentialsId: 'phpserverUsername', variable: 'USER'), string(credentialsId: 'phpserverIP', variable: 'IP')]) {
                 sh """
