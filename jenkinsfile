@@ -1,7 +1,7 @@
 pipeline {
- agent 'any'
- options {
-   skipStagesAfterUnstable()
+ agent 'any'
+ options {
+ skipStagesAfterUnstable()
  }
  stages {
    stage('prepCode') {
