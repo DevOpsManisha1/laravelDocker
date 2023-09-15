@@ -2,10 +2,10 @@ pipeline {
  agent 'any'
  options {
  skipStagesAfterUnstable()
- }
- stages {
-   stage('prepCode') {
-     when {
+ }
+   stages {
+    stage('prepCode') {
+      when {
         branch 'main'
       }
       steps {
