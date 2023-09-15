@@ -7,7 +7,7 @@ pipeline {
     stage('prepCode') {
         when {
           branch 'main'
-        }
+               }
         steps {
                 script {
                         def dockerComposeFile = 'docker-compose.yml'
@@ -24,17 +24,17 @@ pipeline {
                                 sh "sed -i \"s/MYSQL_PASSWORD=.*/MYSQL_PASSWORD=${MYSQL_PASSWORD}/g\" ${dockerComposeFile}"
                         }
                 }
-        }  
+        }
     }
    stage('deploy'){
         when {
                 branch 'main'
         }
         steps {
-                 withCredentials([string(credentialsId: 'phpserverUsername', variable: 'USER'), string(credentialsId: 'phpserverIP', variable: 'IP')]) {
-                 sh """
-                        rsync -auvz -e ssh --exclude .git/ $WORKSPACE $USER@$IP:/home/ && chmod -R 775 storage
-                        """
+                withCredentials([string(credentialsId: 'phpserverUsername', variable: 'USER'), string(credentialsId: 'phpserverIP', variable: 'IP')]) {
+                sh """
+             rsync -auvz -e ssh --exclude .git/ $WORKSPACE $USER@$IP:/home/ && chmod -R 775 storage
+              """
                 }
         }
    }
@@ -43,12 +43,12 @@ pipeline {
                 branch 'main'
         }
         steps {
-                 withCredentials([string(credentialsId: 'phpserverUsername', variable: 'USER'), string(credentialsId: 'phpserverIP', variable: 'IP')]) {
-                 sh """
-                        ssh $USER@$IP 'cd /home/ && bash -s' < script.sh
-                        """
+                withCredentials([string(credentialsId: 'phpserverUsername', variable: 'USER'), string(credentialsId: 'phpserverIP', variable: 'IP')]) {
+                sh """
+                   ssh $USER@$IP 'cd /home/ && bash -s' < script.sh
+               """
                 }
         }
    }
- }
+   }
 }
