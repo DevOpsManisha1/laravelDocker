@@ -25,7 +25,7 @@ RUN composer install
 COPY localhost.conf /etc/apache2/sites-available/localhost.conf
 
 # Enable the virtual host
-RUN a2ensite /etc/apache2/sites-available/localhost.conf
+#RUN a2ensite /etc/apache2/sites-available/localhost.conf
 
 # Expose port 80
 EXPOSE 80
