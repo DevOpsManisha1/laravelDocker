@@ -14,7 +14,6 @@ RUN apt-get update \
         php8.2-enchant \ 
         php8.2-gd \ 
         php8.2-gearman \ 
-        php8.2-gmagick \ 
         php8.2-gmp \ 
         php8.2-gnupg \ 
         php8.2-grpc \ 
@@ -28,7 +27,6 @@ RUN apt-get update \
         php8.2-ldap \ 
         php8.2-lz4 \ 
         php8.2-mailparse \ 
-        php8.2-maxminddb \ 
         php8.2-mcrypt \ 
         php8.2-memcache \ 
         php8.2-memcached \ 
