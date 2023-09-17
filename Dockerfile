@@ -1,6 +1,6 @@
 From  php:8.2-apache
 
-RUN apt-get update && apt-get upgrade 
+RUN apt-get update && apt-get upgrade -y
 WORKDIR /app
 
 COPY . /app
